@@ -19,11 +19,15 @@ namespace RentALLMongo
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void signInButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void signUpBtn_Click(object sender, EventArgs e)
         {
             SignUpForm signUpForm = new SignUpForm();
             signUpForm.ShowDialog();
-
         }
     }
 }
