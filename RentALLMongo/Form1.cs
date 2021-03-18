@@ -21,7 +21,8 @@ namespace RentALLMongo
 
         private void signInButton_Click(object sender, EventArgs e)
         {
-
+            SignIn signIn = new SignIn();
+            signIn.ShowDialog();
         }
 
         private void signUpBtn_Click(object sender, EventArgs e)
