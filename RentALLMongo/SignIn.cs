@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
+using RentALLMongo;
 
 namespace RentALL
 {
@@ -39,6 +40,12 @@ namespace RentALL
             if (query == null)
             {
                 MessageBox.Show("Username or password not correct.");
+            }
+            else
+            {
+                Global.ActiveUser = query;             
+                MainForm mainForm = new MainForm();
+                mainForm.ShowDialog();
             }
 
 
