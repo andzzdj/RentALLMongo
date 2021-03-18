@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using RentALL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,12 +21,8 @@ namespace RentALLMongo
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //var connectionString = ConfigurationManager.AppSettings["mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false"];
-
-            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
-            var database = client.GetDatabase("RentALLDb");
-
-            //var collection = database.GetCollection<User>("Users");
+            SignUpForm signUpForm = new SignUpForm();
+            signUpForm.ShowDialog();
 
         }
     }
