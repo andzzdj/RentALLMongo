@@ -16,6 +16,13 @@ namespace RentALLMongo
             get { return activeUser; }
             set { activeUser = value; }
         }
+     //   private static Vehicle vehicleToComment;
+        public static Vehicle VehicleToComment
+        {
+            get { return VehicleToComment; }
+            set { VehicleToComment = value; }
+        }
+
 
     }
 }

@@ -64,10 +64,17 @@ namespace RentALLMongo
             var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
             var collection = database.GetCollection<User>("users");
+            var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
+
 
             var filter = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);
-
+            var vehiclesFilter = Builders<Vehicle>.Filter.Where(p => p.Owner.Id == Global.ActiveUser.Id);
+     
+            collectionVehicles.DeleteMany(vehiclesFilter);
             collection.DeleteOne(filter);
+           
+
+
 
             foreach (Form f in Application.OpenForms)
             {
