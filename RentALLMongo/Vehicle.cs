@@ -23,6 +23,7 @@ namespace RentALLMongo
         public Vehicle()
         {
             Requests = new List<MongoDBRef>();
+            Reviews = new List<MongoDBRef>();
         }
     }
 }

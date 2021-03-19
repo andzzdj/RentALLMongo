@@ -26,7 +26,7 @@ namespace RentALL
             ReceivedRequests = new List<MongoDBRef>();
         }
 
-        //todo dodaj potrebne liste
+       
 
     }
 }
