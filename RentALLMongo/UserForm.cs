@@ -98,9 +98,89 @@ namespace RentALLMongo
             {
                 foreach (var item in requests)
                 {
-                    //requestsListBox.Items.Add(item.Renter.)
+                    requestsListBox.Items.Add(item.Vehicle.Model );
+                    renterUsernameListbox.Items.Add(item.Renter.Username.ToString());
+
                 }
             }
         }
+
+        private void acceptRequestButton_Click(object sender, EventArgs e)
+        {
+            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+            var database = client.GetDatabase("RentALLDb");
+            var collectionUsers = database.GetCollection<User>("users");
+            var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
+            var collectionRequests = database.GetCollection<Request>("requests");
+
+            var index = requestsListBox.SelectedIndex;
+            var request = collectionRequests.AsQueryable().Where(p => p.Owner.Id == Global.ActiveUser.Id
+                                && p.Renter.Username == renterUsernameListbox.Items[index].ToString()
+                                && p.Vehicle.Model == requestsListBox.SelectedItem.ToString()).FirstOrDefault();
+            if (request.Status == RequestTypesEnum.Accepted || request.Status == RequestTypesEnum.Declined)
+            {
+                MessageBox.Show("You have already" + " " + request.Status.ToString() + " " + "this request!");
+            }
+            else
+            {
+                
+                if (index > 0)
+                {
+                    var filter = Builders<Request>.Filter.Where(p => p.Owner.Id == Global.ActiveUser.Id
+                                    && p.Renter.Username == renterUsernameListbox.Items[index].ToString()
+                                    && p.Vehicle.Model == requestsListBox.SelectedItem.ToString());
+                    //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
+                    var update = Builders<Request>.Update.Set("Status", RequestTypesEnum.Accepted.ToString());
+                    collectionRequests.UpdateOne(filter, update);
+                    MessageBox.Show("You have succesfully accepted this request. Contact info:\n"
+                        + request.Renter.Username + "\n"
+                        + request.Renter.Email + "\n"
+                        + request.Renter.Phone + "\n");
+                }
+                else
+                {
+                    MessageBox.Show("Please first select request from requests list!");
+                }
+            }
+
+        }
+
+        private void DeclineRequestButton_Click(object sender, EventArgs e)
+        {
+            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+            var database = client.GetDatabase("RentALLDb");
+            var collectionUsers = database.GetCollection<User>("users");
+            var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
+            var collectionRequests = database.GetCollection<Request>("requests");
+
+            var index = requestsListBox.SelectedIndex;
+            var request = collectionRequests.AsQueryable().Where(p => p.Owner.Id == Global.ActiveUser.Id
+                                && p.Renter.Username == renterUsernameListbox.Items[index].ToString()
+                                && p.Vehicle.Model == requestsListBox.SelectedItem.ToString()).FirstOrDefault();
+            if (request.Status == RequestTypesEnum.Accepted || request.Status == RequestTypesEnum.Declined)
+            {
+                MessageBox.Show("You have already" + " " + request.Status.ToString() + " " + "this request!");
+            }
+            else
+            {
+                //var index = requestsListBox.SelectedIndex;
+                if (index > 0)
+                {
+                    var filter = Builders<Request>.Filter.Where(p => p.Owner.Id == Global.ActiveUser.Id
+                                    && p.Renter.Username == renterUsernameListbox.Items[index].ToString()
+                                    && p.Vehicle.Model == requestsListBox.SelectedItem.ToString());
+                    //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
+                    var update = Builders<Request>.Update.Set("Status", RequestTypesEnum.Declined.ToString());
+                    collectionRequests.UpdateOne(filter, update);
+                    MessageBox.Show("You have succesfully declined this request!");
+                }
+                else
+                {
+                    MessageBox.Show("Please first select request from requests list!");
+                }
+            }
+
+        }
     }
+    
 }

@@ -40,6 +40,7 @@
             this.showRequestsButton = new System.Windows.Forms.Button();
             this.acceptRequestButton = new System.Windows.Forms.Button();
             this.DeclineRequestButton = new System.Windows.Forms.Button();
+            this.renterUsernameListbox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -119,7 +120,7 @@
             this.requestsListBox.ItemHeight = 16;
             this.requestsListBox.Location = new System.Drawing.Point(368, 35);
             this.requestsListBox.Name = "requestsListBox";
-            this.requestsListBox.Size = new System.Drawing.Size(393, 132);
+            this.requestsListBox.Size = new System.Drawing.Size(201, 132);
             this.requestsListBox.TabIndex = 8;
             // 
             // showRequestsButton
@@ -140,6 +141,7 @@
             this.acceptRequestButton.TabIndex = 10;
             this.acceptRequestButton.Text = "Accept request";
             this.acceptRequestButton.UseVisualStyleBackColor = true;
+            this.acceptRequestButton.Click += new System.EventHandler(this.acceptRequestButton_Click);
             // 
             // DeclineRequestButton
             // 
@@ -149,12 +151,23 @@
             this.DeclineRequestButton.TabIndex = 11;
             this.DeclineRequestButton.Text = "Decline request";
             this.DeclineRequestButton.UseVisualStyleBackColor = true;
+            this.DeclineRequestButton.Click += new System.EventHandler(this.DeclineRequestButton_Click);
+            // 
+            // renterUsernameListbox
+            // 
+            this.renterUsernameListbox.FormattingEnabled = true;
+            this.renterUsernameListbox.ItemHeight = 16;
+            this.renterUsernameListbox.Location = new System.Drawing.Point(607, 35);
+            this.renterUsernameListbox.Name = "renterUsernameListbox";
+            this.renterUsernameListbox.Size = new System.Drawing.Size(181, 132);
+            this.renterUsernameListbox.TabIndex = 12;
             // 
             // UserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.renterUsernameListbox);
             this.Controls.Add(this.DeclineRequestButton);
             this.Controls.Add(this.acceptRequestButton);
             this.Controls.Add(this.showRequestsButton);
@@ -188,5 +201,6 @@
         private System.Windows.Forms.Button showRequestsButton;
         private System.Windows.Forms.Button acceptRequestButton;
         private System.Windows.Forms.Button DeclineRequestButton;
+        private System.Windows.Forms.ListBox renterUsernameListbox;
     }
 }
