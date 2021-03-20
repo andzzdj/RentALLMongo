@@ -36,10 +36,12 @@ namespace RentALLMongo
             var collection = database.GetCollection<Vehicle>("vehicles");
 
             var allVehicles = collection.AsQueryable().ToList();
-           
+            
+           //vehicle1, vehicle2
+           //0,1
             foreach (var item in allVehicles)
             {
-
+                //svaki puyt za svaki vehicle pribaviti njegovog ownera iz baze
                 allVehiclesCombobox.Items.Add(item.Model);
             }
         }
@@ -52,7 +54,7 @@ namespace RentALLMongo
             //todo ovo je za potrebe komentara i treba da se napise na bolji nacin
             var vehicle = collection.AsQueryable()
                 .Where(v=>v.Model == allVehiclesCombobox.SelectedItem.ToString()).FirstOrDefault();
-
+            //var allVehicles = collection.AsQueryable().ToList();
             Global.VehicleToComment = vehicle;
             ReviewForm reviewForm = new ReviewForm();
             reviewForm.ShowDialog();
