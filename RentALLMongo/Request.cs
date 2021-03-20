@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using RentALL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace RentALLMongo
         public DateTime SendDate { get; set; }
         public DateTime AnsweredDate { get; set; }
         public RequestTypesEnum Status { get; set; }
-        public  MongoDBRef Owner { get; set; }
-        public MongoDBRef Renter { get; set; }
-        public MongoDBRef Vehicle { get; set; }
+        public  User Owner { get; set; }
+        public User Renter { get; set; }
+        public Vehicle Vehicle { get; set; }
     }
 }
