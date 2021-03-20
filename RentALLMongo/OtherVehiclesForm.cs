@@ -126,7 +126,7 @@ namespace RentALLMongo
             var database = client.GetDatabase("RentALLDb");
             var vehicleCollection = database.GetCollection<Vehicle>("vehicles");
             var userCollection = database.GetCollection<User>("users");
-
+            
             var user = userCollection.AsQueryable().Where(x => x.Id == Global.ActiveUser.Id).FirstOrDefault();
             VehicleslistBox.Items.Clear();
             for (int i = 0; i < user.BookmarkList.Count(); i++)
@@ -163,6 +163,39 @@ namespace RentALLMongo
             {
                 typeComboBox.Items.Add(item.ToString());
             }
+        }
+
+        private void requestBtn_Click(object sender, EventArgs e)
+        {
+            var index = VehicleslistBox.SelectedIndex;
+            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+            var database = client.GetDatabase("RentALLDb");
+            var collection = database.GetCollection<Vehicle>("vehicles");
+
+            String type = typeComboBox.Text;
+            String model = modelComboBox.Text;
+            String owner = userComboBox.Text;
+
+            var vehicle = collection.AsQueryable()
+                .Where(x => x.Type == type && x.Model == model && x.UserOwner.Username == owner).ToList();
+
+            var vehicleForRequest = vehicle.ElementAt(index);
+
+
+
+            /*var request = new Request
+            {
+                SendDate = DateTime.Now,
+
+            };
+
+            collection.InsertOne(vehicle);//vehicle tek ovde dobija id
+
+            var user = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);//nadji korisnika ownera
+            var def = Builders<User>.Update.Push(u => u.Vehicles, new MongoDBRef("vehicles", vehicle.Id));//definisi update za listu vehicles
+
+            collectionUser.UpdateOne(user, def);//bez ovoga se update ne bi izvrsio*/
+
         }
     }
 }

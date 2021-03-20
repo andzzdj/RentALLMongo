@@ -152,6 +152,7 @@ namespace RentALLMongo
             this.requestBtn.TabIndex = 10;
             this.requestBtn.Text = "Send rent request";
             this.requestBtn.UseVisualStyleBackColor = true;
+            this.requestBtn.Click += new System.EventHandler(this.requestBtn_Click);
             // 
             // OtherVehiclesForm
             // 
