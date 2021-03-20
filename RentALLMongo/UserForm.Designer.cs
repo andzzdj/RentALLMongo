@@ -36,6 +36,10 @@
             this.updateTownButton = new System.Windows.Forms.Button();
             this.deleteAccountButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.requestsListBox = new System.Windows.Forms.ListBox();
+            this.showRequestsButton = new System.Windows.Forms.Button();
+            this.acceptRequestButton = new System.Windows.Forms.Button();
+            this.DeclineRequestButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox1
@@ -109,11 +113,52 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Click button below \r\nto delete account permanently!";
             // 
+            // requestsListBox
+            // 
+            this.requestsListBox.FormattingEnabled = true;
+            this.requestsListBox.ItemHeight = 16;
+            this.requestsListBox.Location = new System.Drawing.Point(368, 35);
+            this.requestsListBox.Name = "requestsListBox";
+            this.requestsListBox.Size = new System.Drawing.Size(393, 132);
+            this.requestsListBox.TabIndex = 8;
+            // 
+            // showRequestsButton
+            // 
+            this.showRequestsButton.Location = new System.Drawing.Point(368, 186);
+            this.showRequestsButton.Name = "showRequestsButton";
+            this.showRequestsButton.Size = new System.Drawing.Size(100, 42);
+            this.showRequestsButton.TabIndex = 9;
+            this.showRequestsButton.Text = "Show requests";
+            this.showRequestsButton.UseVisualStyleBackColor = true;
+            this.showRequestsButton.Click += new System.EventHandler(this.showRequestsButton_Click);
+            // 
+            // acceptRequestButton
+            // 
+            this.acceptRequestButton.Location = new System.Drawing.Point(514, 186);
+            this.acceptRequestButton.Name = "acceptRequestButton";
+            this.acceptRequestButton.Size = new System.Drawing.Size(105, 45);
+            this.acceptRequestButton.TabIndex = 10;
+            this.acceptRequestButton.Text = "Accept request";
+            this.acceptRequestButton.UseVisualStyleBackColor = true;
+            // 
+            // DeclineRequestButton
+            // 
+            this.DeclineRequestButton.Location = new System.Drawing.Point(659, 186);
+            this.DeclineRequestButton.Name = "DeclineRequestButton";
+            this.DeclineRequestButton.Size = new System.Drawing.Size(102, 42);
+            this.DeclineRequestButton.TabIndex = 11;
+            this.DeclineRequestButton.Text = "Decline request";
+            this.DeclineRequestButton.UseVisualStyleBackColor = true;
+            // 
             // UserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.DeclineRequestButton);
+            this.Controls.Add(this.acceptRequestButton);
+            this.Controls.Add(this.showRequestsButton);
+            this.Controls.Add(this.requestsListBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.deleteAccountButton);
             this.Controls.Add(this.updateTownButton);
@@ -139,5 +184,9 @@
         private System.Windows.Forms.Button updateTownButton;
         private System.Windows.Forms.Button deleteAccountButton;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox requestsListBox;
+        private System.Windows.Forms.Button showRequestsButton;
+        private System.Windows.Forms.Button acceptRequestButton;
+        private System.Windows.Forms.Button DeclineRequestButton;
     }
 }
