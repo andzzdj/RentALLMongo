@@ -186,6 +186,9 @@ namespace RentALLMongo
             /*var request = new Request
             {
                 SendDate = DateTime.Now,
+                Status = RequestTypesEnum.Pending,
+
+                
 
             };
 
@@ -194,7 +197,7 @@ namespace RentALLMongo
             var user = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);//nadji korisnika ownera
             var def = Builders<User>.Update.Push(u => u.Vehicles, new MongoDBRef("vehicles", vehicle.Id));//definisi update za listu vehicles
 
-            collectionUser.UpdateOne(user, def);//bez ovoga se update ne bi izvrsio*/
+            collectionUser.UpdateOne(user, def);//*/
 
         }
     }
