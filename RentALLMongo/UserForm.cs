@@ -83,5 +83,24 @@ namespace RentALLMongo
             }
 
         }
+
+        private void showRequestsButton_Click(object sender, EventArgs e)
+        {
+            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+            var database = client.GetDatabase("RentALLDb");
+            var collectionUsers = database.GetCollection<User>("users");
+            var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
+            var collectionRequests = database.GetCollection<Request>("requests");
+
+
+            var requests = collectionRequests.AsQueryable().Where(r => r.Owner.Id == Global.ActiveUser.Id).ToList();
+            if(requests.Count!=0)
+            {
+                foreach (var item in requests)
+                {
+                    //requestsListBox.Items.Add(item)
+                }
+            }
+        }
     }
 }

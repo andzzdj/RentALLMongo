@@ -13,7 +13,7 @@ namespace RentALLMongo
         public ObjectId Id { get; set; }
         public DateTime SendDate { get; set; }
         public DateTime AnsweredDate { get; set; }
-        public bool IsAccepted { get; set; }
+        public RequestTypesEnum Status { get; set; }
         public  MongoDBRef Owner { get; set; }
         public MongoDBRef Renter { get; set; }
         public MongoDBRef Vehicle { get; set; }
