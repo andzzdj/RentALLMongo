@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using RentALLMongo;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,16 +18,15 @@ namespace RentALL
         public string Phone { get; set; }
         public string Email { get; set; }
         public List<MongoDBRef> Vehicles { get; set; }
+        public List<Vehicle> BookmarkList { get; set; } // todo Andjelka->Videti da li da ostane MongoRef jer nam nisu potrbni svi podaci
         public List<MongoDBRef> SentRequests { get; set; }
         public List<MongoDBRef> ReceivedRequests { get; set; }
         public User()
         {
+            BookmarkList = new List<Vehicle>();
             Vehicles = new List<MongoDBRef>();
             SentRequests = new List<MongoDBRef>();
             ReceivedRequests = new List<MongoDBRef>();
         }
-
-       
-
     }
 }

@@ -1,12 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RentALLMongo
@@ -24,40 +19,101 @@ namespace RentALLMongo
             addVehicleForm.ShowDialog();
         }
 
-        private void allVehiclesCombobox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-           
-        }
-
         private void VehicleForm_Load(object sender, EventArgs e)
         {
+            
+        }
+        
+        private void myVehiclesButton_Click(object sender, EventArgs e)
+        {
+            Vehicles.Items.Clear();
             var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
             var collection = database.GetCollection<Vehicle>("vehicles");
 
-            var allVehicles = collection.AsQueryable().ToList();
-            
-           //vehicle1, vehicle2
-           //0,1
-            foreach (var item in allVehicles)
+            var vehicles = collection.AsQueryable().Where(x => x.UserOwner.Id == Global.ActiveUser.Id).ToList();
+
+            foreach (Vehicle v in vehicles)
             {
-                //svaki puyt za svaki vehicle pribaviti njegovog ownera iz baze
-                allVehiclesCombobox.Items.Add(item.Model);
+                Vehicles.Items.Add("Type: " + v.Type + "  Model: " + v.Model + "  Daily price: " + v.DailyPrice + "  Production year: " + v.ProductionYear);
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Vehicles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Description.Items.Clear();
+            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+            var database = client.GetDatabase("RentALLDb");
+            var collection = database.GetCollection<Vehicle>("vehicles");
+            var index = Vehicles.SelectedIndex;
+
+            var vehicles = collection.AsQueryable().Where(x => x.UserOwner.Id == Global.ActiveUser.Id).ToList();
+
+            Description.Items.Add(vehicles.ElementAt(index).Description);
+        }
+
+        private void updateBtn_Click(object sender, EventArgs e)
+        {
+            var index = Vehicles.SelectedIndex;
+            if (index >= 0)
+            {
+                Vehicles.Items.Clear();
+                Description.Items.Clear();
+                var update = updateComboBox.SelectedItem.ToString();
+                var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+                var database = client.GetDatabase("RentALLDb");
+                var collection = database.GetCollection<Vehicle>("vehicles");
+
+                var vehicles = collection.AsQueryable().Where(x => x.UserOwner.Id == Global.ActiveUser.Id).ToList();
+
+                var selectedvehicle = vehicles.ElementAt(index);
+
+                if (update == "Daily price")
+                {
+                    string newPrice = updateTextBox.Text;
+
+                    var filter = Builders<Vehicle>.Filter.Where(p => p.Id == selectedvehicle.Id);
+                    var updateVehicle = Builders<Vehicle>.Update.Set("DailyPrice", newPrice);
+                    collection.UpdateOne(filter, updateVehicle);
+                    MessageBox.Show("Daily price is updated successfully!");
+                }
+                else
+                {
+                    string newDescription = updateTextBox.Text;
+
+                    var filter = Builders<Vehicle>.Filter.Where(p => p.Id == selectedvehicle.Id);
+                    var updateVehicle = Builders<Vehicle>.Update.Set("Description", newDescription);
+                    collection.UpdateOne(filter, updateVehicle);
+                    MessageBox.Show("Description is updated successfully!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("You have to choose a car you want to update!");
+            }
+        }
+
+        private void deleteVehicleButton_Click(object sender, EventArgs e)
         {
             var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
             var collection = database.GetCollection<Vehicle>("vehicles");
-            //todo ovo je za potrebe komentara i treba da se napise na bolji nacin
-            var vehicle = collection.AsQueryable()
-                .Where(v=>v.Model == allVehiclesCombobox.SelectedItem.ToString()).FirstOrDefault();
-            //var allVehicles = collection.AsQueryable().ToList();
-            Global.VehicleToComment = vehicle;
-            ReviewForm reviewForm = new ReviewForm();
-            reviewForm.ShowDialog();
+            var index = Vehicles.SelectedIndex;
+
+            var vehicles = collection.AsQueryable().Where(x => x.UserOwner.Id == Global.ActiveUser.Id).ToList();
+
+            var filter = Builders<Vehicle>.Filter.Where(p => p.Id == vehicles.ElementAt(index).Id);
+
+            collection.DeleteOne(filter);
+            MessageBox.Show("Vehicle successfully deleted!");
+            Description.Items.Clear();
+            //todo Andjelka-> Proveri da li treba jos nesto da se obrise kad i auto, mada ne bi trebalo.
+        }
+
+        private void otherVehiclesButton_Click(object sender, EventArgs e)
+        {
+            OtherVehiclesForm otherVehiclesForm = new OtherVehiclesForm();
+            otherVehiclesForm.ShowDialog();
         }
     }
 }

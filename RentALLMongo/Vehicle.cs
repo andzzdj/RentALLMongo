@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using RentALL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,18 @@ namespace RentALLMongo
         public string Type { get; set; }
         public string Description { get; set; }
         public MongoDBRef Owner { get; set; }
+        public User UserOwner { get; set; }
         public List<MongoDBRef> Reviews { get; set; }
         public List<MongoDBRef> Requests { get; set; }
         public Vehicle()
         {
             Requests = new List<MongoDBRef>();
             Reviews = new List<MongoDBRef>();
+        }
+        public static Vehicle vehicle
+        {
+            get { return vehicle; }
+            set { vehicle = value; }
         }
     }
 }

@@ -22,7 +22,5 @@ namespace RentALLMongo
             get { return vehicleToComment; }
             set { vehicleToComment = value; }
         }
-
-
     }
 }
