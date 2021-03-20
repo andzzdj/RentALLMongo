@@ -39,6 +39,7 @@
             this.ProductionYearTextbox = new System.Windows.Forms.TextBox();
             this.VehicleDescriptionTextBox = new System.Windows.Forms.TextBox();
             this.AddVehicleBtn = new System.Windows.Forms.Button();
+            this.backAddVehicleBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -133,11 +134,22 @@
             this.AddVehicleBtn.UseVisualStyleBackColor = true;
             this.AddVehicleBtn.Click += new System.EventHandler(this.AddVehicleBtn_Click);
             // 
+            // backAddVehicleBtn
+            // 
+            this.backAddVehicleBtn.Location = new System.Drawing.Point(287, 432);
+            this.backAddVehicleBtn.Name = "backAddVehicleBtn";
+            this.backAddVehicleBtn.Size = new System.Drawing.Size(111, 49);
+            this.backAddVehicleBtn.TabIndex = 11;
+            this.backAddVehicleBtn.Text = "Back";
+            this.backAddVehicleBtn.UseVisualStyleBackColor = true;
+            this.backAddVehicleBtn.Click += new System.EventHandler(this.backAddVehicleBtn_Click);
+            // 
             // AddVehicleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(457, 493);
+            this.Controls.Add(this.backAddVehicleBtn);
             this.Controls.Add(this.AddVehicleBtn);
             this.Controls.Add(this.VehicleDescriptionTextBox);
             this.Controls.Add(this.ProductionYearTextbox);
@@ -170,5 +182,6 @@
         private System.Windows.Forms.TextBox ProductionYearTextbox;
         private System.Windows.Forms.TextBox VehicleDescriptionTextBox;
         private System.Windows.Forms.Button AddVehicleBtn;
+        private System.Windows.Forms.Button backAddVehicleBtn;
     }
 }

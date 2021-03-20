@@ -51,7 +51,12 @@ namespace RentALLMongo
                 ProductionYear = ProductionYearTextbox.Text.ToString(),
                 DateAdded = DateTime.Now,
                 Description = VehicleDescriptionTextBox.Text.ToString(),
-                Owner = new MongoDBRef("users", Global.ActiveUser.Id) 
+                Owner = new MongoDBRef("users", Global.ActiveUser.Id),
+                UserOwner = new User
+                {
+                    Id = Global.ActiveUser.Id,
+                    Username = Global.ActiveUser.Username
+                }
             };
 
             collection.InsertOne(vehicle);//vehicle tek ovde dobija id
@@ -64,6 +69,12 @@ namespace RentALLMongo
 
 
             MessageBox.Show("You have successfully added vehicle!");
+        }
+
+        private void backAddVehicleBtn_Click(object sender, EventArgs e)
+        {
+            VehicleForm vehicleForm = new VehicleForm();
+            vehicleForm.ShowDialog();
         }
     }
 }
