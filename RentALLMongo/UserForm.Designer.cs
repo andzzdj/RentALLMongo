@@ -41,6 +41,11 @@
             this.acceptRequestButton = new System.Windows.Forms.Button();
             this.DeclineRequestButton = new System.Windows.Forms.Button();
             this.renterUsernameListbox = new System.Windows.Forms.ListBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.myRequestsListbox = new System.Windows.Forms.ListBox();
+            this.myRequestsButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -97,7 +102,7 @@
             // 
             // deleteAccountButton
             // 
-            this.deleteAccountButton.Location = new System.Drawing.Point(41, 313);
+            this.deleteAccountButton.Location = new System.Drawing.Point(41, 438);
             this.deleteAccountButton.Name = "deleteAccountButton";
             this.deleteAccountButton.Size = new System.Drawing.Size(199, 54);
             this.deleteAccountButton.TabIndex = 6;
@@ -108,7 +113,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(38, 272);
+            this.label3.Location = new System.Drawing.Point(38, 377);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(202, 34);
             this.label3.TabIndex = 7;
@@ -157,16 +162,68 @@
             // 
             this.renterUsernameListbox.FormattingEnabled = true;
             this.renterUsernameListbox.ItemHeight = 16;
-            this.renterUsernameListbox.Location = new System.Drawing.Point(607, 35);
+            this.renterUsernameListbox.Location = new System.Drawing.Point(580, 35);
             this.renterUsernameListbox.Name = "renterUsernameListbox";
             this.renterUsernameListbox.Size = new System.Drawing.Size(181, 132);
             this.renterUsernameListbox.TabIndex = 12;
+            this.renterUsernameListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.renterUsernameListbox_MouseDoubleClick);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(577, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(171, 17);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Double click for more info!";
+            // 
+            // myRequestsListbox
+            // 
+            this.myRequestsListbox.FormattingEnabled = true;
+            this.myRequestsListbox.ItemHeight = 16;
+            this.myRequestsListbox.Location = new System.Drawing.Point(368, 272);
+            this.myRequestsListbox.Name = "myRequestsListbox";
+            this.myRequestsListbox.Size = new System.Drawing.Size(724, 148);
+            this.myRequestsListbox.TabIndex = 14;
+            // 
+            // myRequestsButton
+            // 
+            this.myRequestsButton.Location = new System.Drawing.Point(368, 448);
+            this.myRequestsButton.Name = "myRequestsButton";
+            this.myRequestsButton.Size = new System.Drawing.Size(100, 44);
+            this.myRequestsButton.TabIndex = 15;
+            this.myRequestsButton.Text = "Show my requests";
+            this.myRequestsButton.UseVisualStyleBackColor = true;
+            this.myRequestsButton.Click += new System.EventHandler(this.myRequestsButton_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(365, 15);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(82, 17);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Request list";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(365, 252);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(99, 17);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "My request list";
             // 
             // UserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1121, 504);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.myRequestsButton);
+            this.Controls.Add(this.myRequestsListbox);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.renterUsernameListbox);
             this.Controls.Add(this.DeclineRequestButton);
             this.Controls.Add(this.acceptRequestButton);
@@ -202,5 +259,10 @@
         private System.Windows.Forms.Button acceptRequestButton;
         private System.Windows.Forms.Button DeclineRequestButton;
         private System.Windows.Forms.ListBox renterUsernameListbox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ListBox myRequestsListbox;
+        private System.Windows.Forms.Button myRequestsButton;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }
