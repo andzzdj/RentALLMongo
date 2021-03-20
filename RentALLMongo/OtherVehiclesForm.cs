@@ -168,34 +168,47 @@ namespace RentALLMongo
         private void requestBtn_Click(object sender, EventArgs e)
         {
             var index = VehicleslistBox.SelectedIndex;
-            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
-            var database = client.GetDatabase("RentALLDb");
-            var collection = database.GetCollection<Vehicle>("vehicles");
-
-            String type = typeComboBox.Text;
-            String model = modelComboBox.Text;
             String owner = userComboBox.Text;
-
-            var vehicle = collection.AsQueryable()
-                .Where(x => x.Type == type && x.Model == model && x.UserOwner.Username == owner).ToList();
-
-            var vehicleForRequest = vehicle.ElementAt(index);
-
-
-
-            /*var request = new Request
+            if (index >= 0)
             {
-                SendDate = DateTime.Now,
+                if (owner != Global.ActiveUser.Username)
+                {
+                
+                    var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+                    var database = client.GetDatabase("RentALLDb");
+                    var collection = database.GetCollection<Vehicle>("vehicles");
+                    var collectionRequest = database.GetCollection<Request>("requests");
 
-            };
+                    String type = typeComboBox.Text;
+                    String model = modelComboBox.Text;
 
-            collection.InsertOne(vehicle);//vehicle tek ovde dobija id
+                    var vehicle = collection.AsQueryable()
+                        .Where(x => x.Type == type && x.Model == model && x.UserOwner.Username == owner).ToList();
 
-            var user = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);//nadji korisnika ownera
-            var def = Builders<User>.Update.Push(u => u.Vehicles, new MongoDBRef("vehicles", vehicle.Id));//definisi update za listu vehicles
+                    var vehicleForRequest = vehicle.ElementAt(index);
 
-            collectionUser.UpdateOne(user, def);//bez ovoga se update ne bi izvrsio*/
+                    var request = new Request
+                    {
+                        SendDate = DateTime.Now,
+                        Status = RequestTypesEnum.Pending,
+                        Owner = vehicleForRequest.UserOwner,
+                        Renter = Global.ActiveUser,
+                        Vehicle = vehicleForRequest
+                    };
 
+                    collectionRequest.InsertOne(request);
+
+                    MessageBox.Show("You have successfully sent request!");
+                }
+                else
+                {
+                    MessageBox.Show("You can't rent your own car!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("You have to choose a car you want to rent!");
+            }
         }
     }
 }

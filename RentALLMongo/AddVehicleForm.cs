@@ -52,11 +52,7 @@ namespace RentALLMongo
                 DateAdded = DateTime.Now,
                 Description = VehicleDescriptionTextBox.Text.ToString(),
                 Owner = new MongoDBRef("users", Global.ActiveUser.Id),
-                UserOwner = new User
-                {
-                    Id = Global.ActiveUser.Id,
-                    Username = Global.ActiveUser.Username
-                }
+                UserOwner = Global.ActiveUser
             };
 
             collection.InsertOne(vehicle);//vehicle tek ovde dobija id
