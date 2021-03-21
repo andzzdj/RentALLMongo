@@ -151,6 +151,8 @@ namespace RentALLMongo
             var index = AllCommentsListbox.SelectedIndex;
             if (review.User.Id == Global.ActiveUser.Id)
             {
+               
+
                 string newComment = MyCommentTextBox.Text.ToString();
 
                 var filter = Builders<Review>.Filter.Where(r =>
@@ -160,6 +162,9 @@ namespace RentALLMongo
                 var update = Builders<Review>.Update.Set("Comment", newComment);
 
                 collectionReview.UpdateOne(filter, update);
+                AllCommentsListbox.Items.Clear();
+
+                AllCommentsListbox.Items.Add(newComment);
 
                 MessageBox.Show("Comment is updated successfully!");
             }
