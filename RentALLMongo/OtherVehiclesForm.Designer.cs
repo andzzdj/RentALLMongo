@@ -41,11 +41,13 @@ namespace RentALLMongo
             this.MyBookmarkBtn = new System.Windows.Forms.Button();
             this.bookmarkBtn = new System.Windows.Forms.Button();
             this.requestBtn = new System.Windows.Forms.Button();
+            this.myBookmarksBox = new System.Windows.Forms.ListBox();
+            this.removeBookmarkBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // typeComboBox
             // 
-            this.typeComboBox.Location = new System.Drawing.Point(497, 45);
+            this.typeComboBox.Location = new System.Drawing.Point(510, 29);
             this.typeComboBox.Name = "typeComboBox";
             this.typeComboBox.Size = new System.Drawing.Size(153, 24);
             this.typeComboBox.TabIndex = 0;
@@ -53,7 +55,7 @@ namespace RentALLMongo
             // 
             // modelComboBox
             // 
-            this.modelComboBox.Location = new System.Drawing.Point(497, 101);
+            this.modelComboBox.Location = new System.Drawing.Point(510, 76);
             this.modelComboBox.Name = "modelComboBox";
             this.modelComboBox.Size = new System.Drawing.Size(153, 24);
             this.modelComboBox.TabIndex = 0;
@@ -61,7 +63,7 @@ namespace RentALLMongo
             // 
             // userComboBox
             // 
-            this.userComboBox.Location = new System.Drawing.Point(497, 159);
+            this.userComboBox.Location = new System.Drawing.Point(510, 123);
             this.userComboBox.Name = "userComboBox";
             this.userComboBox.Size = new System.Drawing.Size(153, 24);
             this.userComboBox.TabIndex = 0;
@@ -69,7 +71,7 @@ namespace RentALLMongo
             // 
             // commentsBtn
             // 
-            this.commentsBtn.Location = new System.Drawing.Point(523, 213);
+            this.commentsBtn.Location = new System.Drawing.Point(535, 162);
             this.commentsBtn.Name = "commentsBtn";
             this.commentsBtn.Size = new System.Drawing.Size(95, 49);
             this.commentsBtn.TabIndex = 1;
@@ -80,7 +82,7 @@ namespace RentALLMongo
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(494, 25);
+            this.label4.Location = new System.Drawing.Point(507, 9);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(166, 17);
             this.label4.TabIndex = 2;
@@ -89,7 +91,7 @@ namespace RentALLMongo
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(495, 81);
+            this.label5.Location = new System.Drawing.Point(507, 56);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(200, 17);
             this.label5.TabIndex = 3;
@@ -98,7 +100,7 @@ namespace RentALLMongo
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(494, 139);
+            this.label6.Location = new System.Drawing.Point(507, 103);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(134, 17);
             this.label6.TabIndex = 4;
@@ -108,9 +110,9 @@ namespace RentALLMongo
             // 
             this.VehicleslistBox.FormattingEnabled = true;
             this.VehicleslistBox.ItemHeight = 16;
-            this.VehicleslistBox.Location = new System.Drawing.Point(43, 25);
+            this.VehicleslistBox.Location = new System.Drawing.Point(21, 25);
             this.VehicleslistBox.Name = "VehicleslistBox";
-            this.VehicleslistBox.Size = new System.Drawing.Size(260, 84);
+            this.VehicleslistBox.Size = new System.Drawing.Size(445, 84);
             this.VehicleslistBox.TabIndex = 5;
             this.VehicleslistBox.SelectedIndexChanged += new System.EventHandler(this.VehicleslistBox_SelectedIndexChanged);
             // 
@@ -118,17 +120,17 @@ namespace RentALLMongo
             // 
             this.DescriptionlistBox.FormattingEnabled = true;
             this.DescriptionlistBox.ItemHeight = 16;
-            this.DescriptionlistBox.Location = new System.Drawing.Point(43, 139);
+            this.DescriptionlistBox.Location = new System.Drawing.Point(21, 139);
             this.DescriptionlistBox.Name = "DescriptionlistBox";
-            this.DescriptionlistBox.Size = new System.Drawing.Size(260, 84);
+            this.DescriptionlistBox.Size = new System.Drawing.Size(445, 84);
             this.DescriptionlistBox.TabIndex = 7;
             this.DescriptionlistBox.SelectedIndexChanged += new System.EventHandler(this.DescriptionlistBox_SelectedIndexChanged);
             // 
             // MyBookmarkBtn
             // 
-            this.MyBookmarkBtn.Location = new System.Drawing.Point(43, 303);
+            this.MyBookmarkBtn.Location = new System.Drawing.Point(269, 363);
             this.MyBookmarkBtn.Name = "MyBookmarkBtn";
-            this.MyBookmarkBtn.Size = new System.Drawing.Size(97, 52);
+            this.MyBookmarkBtn.Size = new System.Drawing.Size(136, 38);
             this.MyBookmarkBtn.TabIndex = 8;
             this.MyBookmarkBtn.Text = "My bookmarks";
             this.MyBookmarkBtn.UseVisualStyleBackColor = true;
@@ -136,7 +138,7 @@ namespace RentALLMongo
             // 
             // bookmarkBtn
             // 
-            this.bookmarkBtn.Location = new System.Drawing.Point(156, 303);
+            this.bookmarkBtn.Location = new System.Drawing.Point(21, 254);
             this.bookmarkBtn.Name = "bookmarkBtn";
             this.bookmarkBtn.Size = new System.Drawing.Size(97, 52);
             this.bookmarkBtn.TabIndex = 9;
@@ -146,7 +148,7 @@ namespace RentALLMongo
             // 
             // requestBtn
             // 
-            this.requestBtn.Location = new System.Drawing.Point(269, 303);
+            this.requestBtn.Location = new System.Drawing.Point(22, 336);
             this.requestBtn.Name = "requestBtn";
             this.requestBtn.Size = new System.Drawing.Size(96, 52);
             this.requestBtn.TabIndex = 10;
@@ -154,9 +156,31 @@ namespace RentALLMongo
             this.requestBtn.UseVisualStyleBackColor = true;
             this.requestBtn.Click += new System.EventHandler(this.requestBtn_Click);
             // 
+            // myBookmarksBox
+            // 
+            this.myBookmarksBox.FormattingEnabled = true;
+            this.myBookmarksBox.ItemHeight = 16;
+            this.myBookmarksBox.Location = new System.Drawing.Point(222, 260);
+            this.myBookmarksBox.Name = "myBookmarksBox";
+            this.myBookmarksBox.Size = new System.Drawing.Size(451, 84);
+            this.myBookmarksBox.TabIndex = 11;
+            this.myBookmarksBox.SelectedIndexChanged += new System.EventHandler(this.myBookmarksBox_SelectedIndexChanged);
+            // 
+            // removeBookmarkBtn
+            // 
+            this.removeBookmarkBtn.Location = new System.Drawing.Point(485, 363);
+            this.removeBookmarkBtn.Name = "removeBookmarkBtn";
+            this.removeBookmarkBtn.Size = new System.Drawing.Size(136, 38);
+            this.removeBookmarkBtn.TabIndex = 12;
+            this.removeBookmarkBtn.Text = "Remove bookmark";
+            this.removeBookmarkBtn.UseVisualStyleBackColor = true;
+            this.removeBookmarkBtn.Click += new System.EventHandler(this.removeBookmarkBtn_Click);
+            // 
             // OtherVehiclesForm
             // 
             this.ClientSize = new System.Drawing.Size(707, 413);
+            this.Controls.Add(this.removeBookmarkBtn);
+            this.Controls.Add(this.myBookmarksBox);
             this.Controls.Add(this.requestBtn);
             this.Controls.Add(this.bookmarkBtn);
             this.Controls.Add(this.MyBookmarkBtn);
@@ -190,5 +214,7 @@ namespace RentALLMongo
         private System.Windows.Forms.Button MyBookmarkBtn;
         private System.Windows.Forms.Button bookmarkBtn;
         private System.Windows.Forms.Button requestBtn;
+        private System.Windows.Forms.ListBox myBookmarksBox;
+        private System.Windows.Forms.Button removeBookmarkBtn;
     }
 }

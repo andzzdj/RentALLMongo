@@ -36,6 +36,7 @@ namespace RentALLMongo
 
         private void userCcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            DescriptionlistBox.Items.Clear();
             VehicleslistBox.Items.Clear();
             var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
@@ -111,48 +112,66 @@ namespace RentALLMongo
 
             var index = VehicleslistBox.SelectedIndex;
             var vehicle = vehicleCollection.AsQueryable().Where(v => v.Type == type && v.Model == model && v.UserOwner.Username == owner).ToList();
-           
+
             DescriptionlistBox.Items.Add(vehicle.ElementAt(index).Description);
         }
 
         private void DescriptionlistBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void MyBookmarkBtn_Click(object sender, EventArgs e)
         {
+            myBookmarksBox.Items.Clear();
             var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
             var vehicleCollection = database.GetCollection<Vehicle>("vehicles");
             var userCollection = database.GetCollection<User>("users");
-            
-            var user = userCollection.AsQueryable().Where(x => x.Id == Global.ActiveUser.Id).FirstOrDefault();
+
+            var bookmarkList = userCollection.AsQueryable().Where(x => x.Id == Global.ActiveUser.Id).Select(x => x.BookmarkList).FirstOrDefault();
             VehicleslistBox.Items.Clear();
-            for (int i = 0; i < user.BookmarkList.Count(); i++)
+            for (int i = 0; i < bookmarkList.Count(); i++)
             {
-                VehicleslistBox.Items.Add(user.BookmarkList.ElementAt(i));//todo Andjelka-> Ispravi ispis vozila
+                myBookmarksBox.Items.Add("Type: " + bookmarkList.ElementAt(i).Type +
+                                         "  Model: " + bookmarkList.ElementAt(i).Model +
+                                         "  Daily price: " + bookmarkList.ElementAt(i).DailyPrice +
+                                         "  Production year: " + bookmarkList.ElementAt(i).ProductionYear);
+                /*+"  Owner: " + bookmarkList.ElementAt(i).UserOwner.Username*/  //todo Andjelka-> Proveri da li hoce USerOwner kada se sredi baza!!!
             }
         }
 
         private void bookmarkBtn_Click(object sender, EventArgs e)
         {
-            string type = typeComboBox.Text;
-            string model = modelComboBox.Text;
-            string owner = userComboBox.Text;
+            if (VehicleslistBox.SelectedIndex >= 0)
+            {
+                string type = typeComboBox.Text;
+                string model = modelComboBox.Text;
+                string owner = userComboBox.Text;
+                var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+                var database = client.GetDatabase("RentALLDb");
 
-            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
-            var database = client.GetDatabase("RentALLDb");
-            var vehicleCollection = database.GetCollection<Vehicle>("vehicles");
-            var userCollection = database.GetCollection<User>("users");
-            var index = VehicleslistBox.SelectedIndex;
+                var userCollection = database.GetCollection<User>("users");
+                var vehicleCollection = database.GetCollection<Vehicle>("vehicles");
 
+                var index = VehicleslistBox.SelectedIndex;
 
-            var vehicle = vehicleCollection.AsQueryable().Where(v => v.Type == type && v.Model == model && v.UserOwner.Username == owner).FirstOrDefault();
+                var vehicle = vehicleCollection.AsQueryable().Where(v => v.Type == type && v.Model == model && v.UserOwner.Username == owner).FirstOrDefault();
+                var userBookmarkVehicle = userCollection.AsQueryable().Where(v => v.BookmarkList.Contains(vehicle)).Any();
 
-            var user = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);
-            var def = Builders<User>.Update.Push(u => u.BookmarkList, new Vehicle { Id = vehicle.Id, Type = vehicle.Type, Model = vehicle.Model, DailyPrice = vehicle.DailyPrice, Description = vehicle.Description, Owner = vehicle.Owner });
-            userCollection.UpdateOne(user, def);
+                if (userBookmarkVehicle == false)
+                {
+                    var user = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);
+                    var def = Builders<User>.Update.Push(u => u.BookmarkList, new Vehicle { Id = vehicle.Id, Type = vehicle.Type, Model = vehicle.Model, DailyPrice = vehicle.DailyPrice, Description = vehicle.Description, Owner = vehicle.Owner, ProductionYear = vehicle.ProductionYear });
+                    userCollection.UpdateOne(user, def);
+                    myBookmarksBox.Items.Add("Type: " + vehicle.Type + "  Model: " + vehicle.Model + "  Daily price: " + vehicle.DailyPrice + "  Production year: " + vehicle.ProductionYear);
+                }
+               
+            }
+            else
+            {
+                MessageBox.Show("Please choose a vehicle to bookmark!");
+            }
         }
 
         private void OtherVehiclesForm_Load_1(object sender, EventArgs e)
@@ -173,7 +192,7 @@ namespace RentALLMongo
             {
                 if (owner != Global.ActiveUser.Username)
                 {
-                
+
                     var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
                     var database = client.GetDatabase("RentALLDb");
                     var collection = database.GetCollection<Vehicle>("vehicles");
@@ -208,6 +227,40 @@ namespace RentALLMongo
             else
             {
                 MessageBox.Show("You have to choose a car you want to rent!");
+            }
+        }
+
+        private void myBookmarksBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void removeBookmarkBtn_Click(object sender, EventArgs e)
+        {
+            if (myBookmarksBox.SelectedIndex >= 0)
+            {
+                string type = typeComboBox.Text;
+                string model = modelComboBox.Text;
+                string owner = userComboBox.Text;
+                var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+                var database = client.GetDatabase("RentALLDb");
+
+                var userCollection = database.GetCollection<User>("users");
+                var index = myBookmarksBox.SelectedIndex;
+
+                var filter = Builders<User>.Filter.Where(x => x.Id == Global.ActiveUser.Id);
+                var bookmarkList = userCollection.AsQueryable().Where(x => x.Id == Global.ActiveUser.Id).Select(x => x.BookmarkList).FirstOrDefault();
+                bookmarkList.Remove(bookmarkList.ElementAt(index));
+                var update = Builders<User>.Update.Set("BookmarkList", bookmarkList);
+
+
+                userCollection.UpdateOne(filter, update);
+                myBookmarksBox.Items.RemoveAt(index);
+                MessageBox.Show("Bookmark successfully removed!");
+            }
+            else
+            {
+                MessageBox.Show("Choose a vehicle to remove from bookmarks!");
             }
         }
     }
