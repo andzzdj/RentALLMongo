@@ -129,15 +129,15 @@ namespace RentALLMongo
             var vehicleCollection = database.GetCollection<Vehicle>("vehicles");
             var userCollection = database.GetCollection<User>("users");
 
-            var bookmarkList = userCollection.AsQueryable().Where(x => x.Id == Global.ActiveUser.Id).Select(x => x.BookmarkList).FirstOrDefault();
+            var user = userCollection.AsQueryable().Where(x => x.Id == Global.ActiveUser.Id).FirstOrDefault();
+            var bookmark = user.BookmarkList;
             VehicleslistBox.Items.Clear();
-            for (int i = 0; i < bookmarkList.Count(); i++)
+            foreach(var b in bookmark)
             {
-                myBookmarksBox.Items.Add("Type: " + bookmarkList.ElementAt(i).Type +
-                                         "  Model: " + bookmarkList.ElementAt(i).Model +
-                                         "  Daily price: " + bookmarkList.ElementAt(i).DailyPrice +
-                                         "  Production year: " + bookmarkList.ElementAt(i).ProductionYear);
-                /*+"  Owner: " + bookmarkList.ElementAt(i).UserOwner.Username*/  //todo Andjelka-> Proveri da li hoce USerOwner kada se sredi baza!!!
+                myBookmarksBox.Items.Add("Type: " + b.Type +
+                                         "  Model: " + b.Model +
+                                         "  Daily price: " + b.DailyPrice +
+                                         "  Production year: " + b.ProductionYear);
             }
         }
 
@@ -155,18 +155,18 @@ namespace RentALLMongo
                 var vehicleCollection = database.GetCollection<Vehicle>("vehicles");
 
                 var index = VehicleslistBox.SelectedIndex;
+                var vehicle = vehicleCollection.AsQueryable().Where(v => v.Type == type && v.Model == model && v.UserOwner.Username == owner).ToList().ElementAt(index);
 
-                var vehicle = vehicleCollection.AsQueryable().Where(v => v.Type == type && v.Model == model && v.UserOwner.Username == owner).FirstOrDefault();
-                var userBookmarkVehicle = userCollection.AsQueryable().Where(v => v.BookmarkList.Contains(vehicle)).Any();
+                var userBookmarkVehicle = userCollection.AsQueryable().Where(v => v.Id == Global.ActiveUser.Id).SingleOrDefault().BookmarkList;
+                var bookmark = userBookmarkVehicle.Where(b => b.Id == vehicle.Id).Any();
 
-                if (userBookmarkVehicle == false)
+                if (bookmark == false)
                 {
                     var user = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);
                     var def = Builders<User>.Update.Push(u => u.BookmarkList, new Vehicle { Id = vehicle.Id, Type = vehicle.Type, Model = vehicle.Model, DailyPrice = vehicle.DailyPrice, Description = vehicle.Description, Owner = vehicle.Owner, ProductionYear = vehicle.ProductionYear });
                     userCollection.UpdateOne(user, def);
                     myBookmarksBox.Items.Add("Type: " + vehicle.Type + "  Model: " + vehicle.Model + "  Daily price: " + vehicle.DailyPrice + "  Production year: " + vehicle.ProductionYear);
-                }
-               
+                }  
             }
             else
             {

@@ -18,7 +18,7 @@ namespace RentALL
         public string Phone { get; set; }
         public string Email { get; set; }
         public List<MongoDBRef> Vehicles { get; set; }
-        public List<Vehicle> BookmarkList { get; set; } // todo Andjelka->Videti da li da ostane MongoRef jer nam nisu potrbni svi podaci
+        public List<Vehicle> BookmarkList { get; set; } // todo Andjelka->Obrisati Requests kod Usera i kod vozila
         public List<MongoDBRef> SentRequests { get; set; }
         public List<MongoDBRef> ReceivedRequests { get; set; }
         public User()
