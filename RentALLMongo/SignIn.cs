@@ -1,13 +1,8 @@
 ﻿using MongoDB.Driver;
 using System;
-using System.Configuration;
 using System.Windows.Forms;
-
-
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 using RentALLMongo;
 
@@ -33,22 +28,16 @@ namespace RentALL
             var query = collection.AsQueryable()
                                   .Where(p => p.Username == username && p.Password == password).FirstOrDefault();
 
-
-
-
-
             if (query == null)
             {
                 MessageBox.Show("Username or password not correct.");
             }
             else
             {
-                Global.ActiveUser = query;             
+                Global.ActiveUser = query;
                 MainForm mainForm = new MainForm();
                 mainForm.ShowDialog();
             }
-
-
         }
     }
 }

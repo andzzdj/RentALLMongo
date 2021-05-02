@@ -1,13 +1,8 @@
 ﻿using MongoDB.Driver;
 using RentALL;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RentALLMongo
@@ -36,7 +31,7 @@ namespace RentALLMongo
             };
 
 
-            
+
 
             var veh = collection.AsQueryable().Where(v => v.Id == Global.VehicleToComment.Id
                             && v.Owner.Id == Global.ActiveUser.Id).FirstOrDefault();
@@ -76,7 +71,7 @@ namespace RentALLMongo
             foreach (var item in comments)
             {
                 var user = collectionUser.AsQueryable().Where(u => u.Id == item.User.Id).Select(u => u.Username);
-                     
+
                 AllCommentsListbox.Items.Add(
                     item.Comment
                     );
@@ -104,73 +99,82 @@ namespace RentALLMongo
             var user = collectionUser.AsQueryable().Where(u => u.Id == comment.User.Id).First();
 
             MessageBox.Show("DateAdded:" + " " + comment.DateAdded + "\n" +
-                         "User:" +  " " + user.Username +"\n"+
-                         "Comment:"+" "+ comment.Comment);
+                         "User:" + " " + user.Username + "\n" +
+                         "Comment:" + " " + comment.Comment);
         }
 
         private void DeleteCommentButton_Click(object sender, EventArgs e)
         {
-            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
-            var database = client.GetDatabase("RentALLDb");
-           
-            var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
-            var collectionUser = database.GetCollection<User>("users");
-            var collectionReview = database.GetCollection<Review>("reviews");
-
-            var review = collectionReview.AsQueryable()
-                .Where( r=> r.Comment == AllCommentsListbox.SelectedItem.ToString()).First();
-            var index = AllCommentsListbox.SelectedIndex;
-            if (review.User.Id == Global.ActiveUser.Id)
+            if (AllCommentsListbox.SelectedIndex >= 0)
             {
-                var filter = Builders<Review>.Filter.Where(r => r.User.Id == Global.ActiveUser.Id);
-                var res = collectionReview.DeleteOne(filter);
-                AllCommentsListbox.Items.RemoveAt(index);
+                var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+                var database = client.GetDatabase("RentALLDb");
 
-                
-               
+                var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
+                var collectionUser = database.GetCollection<User>("users");
+                var collectionReview = database.GetCollection<Review>("reviews");
 
+                var review = collectionReview.AsQueryable()
+                    .Where(r => r.Comment == AllCommentsListbox.SelectedItem.ToString()).First();
+                var index = AllCommentsListbox.SelectedIndex;
+                if (review.User.Id == Global.ActiveUser.Id)
+                {
+                    var filter = Builders<Review>.Filter.Where(r => r.User.Id == Global.ActiveUser.Id);
+                    var res = collectionReview.DeleteOne(filter);
+                    AllCommentsListbox.Items.RemoveAt(index);
+                }
+                else
+                {
+                    MessageBox.Show("You can not delete comment which you did not post!");
+                }
             }
             else
             {
-                MessageBox.Show("You can not delete comment which you did not post!");
+                MessageBox.Show("You have to choose a comment you want to delete!");
             }
-
         }
 
         private void updateCommentButton_Click(object sender, EventArgs e)
         {
+
             var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
 
             var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
             var collectionUser = database.GetCollection<User>("users");
             var collectionReview = database.GetCollection<Review>("reviews");
-
-            var review = collectionReview.AsQueryable()
-               .Where(r => r.Comment == AllCommentsListbox.SelectedItem.ToString()).First();
-            var index = AllCommentsListbox.SelectedIndex;
-            if (review.User.Id == Global.ActiveUser.Id)
+            if (AllCommentsListbox.SelectedIndex >= 0)
             {
-               
+                var review = collectionReview.AsQueryable()
+                   .Where(r => r.Comment == AllCommentsListbox.SelectedItem.ToString()).First();
+                var index = AllCommentsListbox.SelectedIndex;
+                if (review.User.Id == Global.ActiveUser.Id)
+                {
 
-                string newComment = MyCommentTextBox.Text.ToString();
 
-                var filter = Builders<Review>.Filter.Where(r =>
-                                     r.Comment == AllCommentsListbox.SelectedItem.ToString() &&
-                                     r.User.Id == Global.ActiveUser.Id);
-                //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
-                var update = Builders<Review>.Update.Set("Comment", newComment);
+                    string newComment = MyCommentTextBox.Text.ToString();
 
-                collectionReview.UpdateOne(filter, update);
-                AllCommentsListbox.Items.Clear();
+                    var filter = Builders<Review>.Filter.Where(r =>
+                                         r.Comment == AllCommentsListbox.SelectedItem.ToString() &&
+                                         r.User.Id == Global.ActiveUser.Id);
+                    //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
+                    var update = Builders<Review>.Update.Set("Comment", newComment);
 
-                AllCommentsListbox.Items.Add(newComment);
+                    collectionReview.UpdateOne(filter, update);
+                    AllCommentsListbox.Items.Clear();
 
-                MessageBox.Show("Comment is updated successfully!");
+                    AllCommentsListbox.Items.Add(newComment);
+
+                    MessageBox.Show("Comment is updated successfully!");
+                }
+                else
+                {
+                    MessageBox.Show("You can not update comment which you did not post!");
+                }
             }
             else
             {
-                MessageBox.Show("You can not update comment which you did not post!");
+                MessageBox.Show("You have to choose a comment you want to update.");
             }
         }
     }

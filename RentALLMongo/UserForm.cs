@@ -1,16 +1,8 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
-
-
+﻿using MongoDB.Driver;
 using RentALL;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RentALLMongo
@@ -37,7 +29,7 @@ namespace RentALLMongo
             //                     p.Password == Global.ActiveUser.Password).FirstOrDefault();
             var filter = Builders<User>.Filter.Where(p => p.Username == Global.ActiveUser.Username &&
                                  p.Password == Global.ActiveUser.Password);
-          //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
+            //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
             var update = Builders<User>.Update.Set("Password", newPassword);
             collection.UpdateOne(filter, update);
             MessageBox.Show("Password is updated successfully!");
@@ -45,7 +37,7 @@ namespace RentALLMongo
 
         private void updateTownButton_Click(object sender, EventArgs e)
         {
-            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");         
+            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
             var collection = database.GetCollection<User>("users");
 
@@ -69,12 +61,9 @@ namespace RentALLMongo
 
             var filter = Builders<User>.Filter.Where(p => p.Id == Global.ActiveUser.Id);
             var vehiclesFilter = Builders<Vehicle>.Filter.Where(p => p.Owner.Id == Global.ActiveUser.Id);
-     
+
             collectionVehicles.DeleteMany(vehiclesFilter);
             collection.DeleteOne(filter);
-           
-
-
 
             foreach (Form f in Application.OpenForms)
             {
@@ -95,11 +84,11 @@ namespace RentALLMongo
             requestsListBox.Items.Clear();
             renterUsernameListbox.Items.Clear();
             var requests = collectionRequests.AsQueryable().Where(r => r.Owner.Id == Global.ActiveUser.Id).ToList();
-            if(requests.Count!=0)
+            if (requests.Count != 0)
             {
                 foreach (var item in requests)
                 {
-                    requestsListBox.Items.Add(item.Vehicle.Model );
+                    requestsListBox.Items.Add(item.Vehicle.Model);
                     renterUsernameListbox.Items.Add(item.Renter.Username.ToString());
 
                 }
@@ -114,8 +103,8 @@ namespace RentALLMongo
             var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
             var collectionRequests = database.GetCollection<Request>("requests");
 
-            requestsListBox.Items.Clear();
-            renterUsernameListbox.Items.Clear();
+            //requestsListBox.Items.Clear();
+            //renterUsernameListbox.Items.Clear();
             var index = requestsListBox.SelectedIndex;
             if (index < 0)
             {
@@ -133,22 +122,20 @@ namespace RentALLMongo
                 else
                 {
 
-                    
-                        var filter = Builders<Request>.Filter.Where(p => p.Owner.Id == Global.ActiveUser.Id
-                                        && p.Renter.Username == renterUsernameListbox.Items[index].ToString()
-                                        && p.Vehicle.Model == requestsListBox.SelectedItem.ToString());
-                        //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
-                        var update = Builders<Request>.Update.Set("Status", RequestTypesEnum.Accepted.ToString());
-                        collectionRequests.UpdateOne(filter, update);
-                        MessageBox.Show("You have succesfully accepted this request. Contact info:\n"
-                            + request.Renter.Username + "\n"
-                            + request.Renter.Email + "\n"
-                            + request.Renter.Phone + "\n");
-                   
+
+                    var filter = Builders<Request>.Filter.Where(p => p.Owner.Id == Global.ActiveUser.Id
+                                    && p.Renter.Username == renterUsernameListbox.Items[index].ToString()
+                                    && p.Vehicle.Model == requestsListBox.SelectedItem.ToString());
+                    //  var update = MongoDB.Driver.Builders<User>.Update.Set("oznake", BsonValue.Create(new List<string> { "test" }));
+                    var update = Builders<Request>.Update.Set("Status", RequestTypesEnum.Accepted.ToString());
+                    collectionRequests.UpdateOne(filter, update);
+                    MessageBox.Show("You have succesfully accepted this request. Contact info:\n"
+                        + request.Renter.Username + "\n"
+                        + request.Renter.Email + "\n"
+                        + request.Renter.Phone + "\n");
+
                 }
             }
-           
-
         }
 
         private void DeclineRequestButton_Click(object sender, EventArgs e)
@@ -159,8 +146,8 @@ namespace RentALLMongo
             var collectionVehicles = database.GetCollection<Vehicle>("vehicles");
             var collectionRequests = database.GetCollection<Request>("requests");
 
-            requestsListBox.Items.Clear();
-            renterUsernameListbox.Items.Clear();
+            //requestsListBox.Items.Clear();
+            //renterUsernameListbox.Items.Clear();
             var index = requestsListBox.SelectedIndex;
             if (index < 0)
             {
@@ -213,9 +200,9 @@ namespace RentALLMongo
                 MessageBox.Show("Username:" + " " + user.Username + "\n" +
                     "Town:" + user.Town + "\n" +
                     "Email:" + user.Email + "\n" +
-                    "Phone:" + user.Phone + "\n"+
-                    "Date sent:"+request.SendDate+"\n"+
-                    "Status:"+request.Status.ToString()+"\n");
+                    "Phone:" + user.Phone + "\n" +
+                    "Date sent:" + request.SendDate + "\n" +
+                    "Status:" + request.Status.ToString() + "\n");
             }
         }
 
@@ -238,22 +225,17 @@ namespace RentALLMongo
                     if (item.Status != RequestTypesEnum.Pending)
                     {
                         myRequestsListbox.Items.Add("Model:" + " " + item.Vehicle.Model + " " + "Date sent:" +
-                            " " + item.SendDate.ToShortDateString() + " " + "Status:" + " " + item.Status.ToString() 
+                            " " + item.SendDate.ToShortDateString() + " " + "Status:" + " " + item.Status.ToString()
                             + "Date answered:" + " " + item.AnsweredDate.ToShortDateString());
 
                     }
-                    else 
+                    else
                     {
-                        myRequestsListbox.Items.Add("Model:" + " " + item.Vehicle.Model + " " + "Date sent:" + 
+                        myRequestsListbox.Items.Add("Model:" + " " + item.Vehicle.Model + " " + "Date sent:" +
                             " " + item.SendDate.ToShortDateString() + " " + "Status:" + " " + item.Status.ToString());
-
                     }
                 }
             }
-
-
-
         }
     }
-    
 }

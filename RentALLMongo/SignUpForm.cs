@@ -1,12 +1,7 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
 using System.Data;
-using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace RentALL
@@ -27,21 +22,29 @@ namespace RentALL
 
             var collection = database.GetCollection<User>("users");
 
-            User user = new User
+            var query = collection.AsQueryable()
+                                  .Where(p => p.Username == UsernameTextbox.Text).FirstOrDefault();
+            if (query == null)
             {
-                Name = NameTextbox.Text,
-                Surname = SurnameTextbox.Text,
-                Town = TownTextobx.Text,
-                Username = UsernameTextbox.Text,
-                Password = PasswordTextbox.Text,
-                Phone = PhoneTxtbox.Text,
-                Email = EmailTxtbox.Text
-            };
+                User user = new User
+                {
+                    Name = NameTextbox.Text,
+                    Surname = SurnameTextbox.Text,
+                    Town = TownTextobx.Text,
+                    Username = UsernameTextbox.Text,
+                    Password = PasswordTextbox.Text,
+                    Phone = PhoneTxtbox.Text,
+                    Email = EmailTxtbox.Text
+                };
 
-            collection.InsertOne(user);
+                collection.InsertOne(user);
 
-            MessageBox.Show("You have signed up successfully, please sign in to continue!");
-            
+                MessageBox.Show("You have signed up successfully, please sign in to continue!");
+            }
+            else
+            {
+                MessageBox.Show("Username already exists!");
+            }
         }
     }
 }

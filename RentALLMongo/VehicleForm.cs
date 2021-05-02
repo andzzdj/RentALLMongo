@@ -21,9 +21,9 @@ namespace RentALLMongo
 
         private void VehicleForm_Load(object sender, EventArgs e)
         {
-            
+
         }
-        
+
         private void myVehiclesButton_Click(object sender, EventArgs e)
         {
             Vehicles.Items.Clear();
@@ -109,7 +109,6 @@ namespace RentALLMongo
                 collection.DeleteOne(filter);
                 MessageBox.Show("Vehicle successfully deleted!");
                 Description.Items.Clear();
-                //todo Andjelka-> Proveri da li treba jos nesto da se obrise kad i auto, mada ne bi trebalo.
             }
             else
             {

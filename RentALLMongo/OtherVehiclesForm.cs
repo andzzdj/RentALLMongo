@@ -80,7 +80,7 @@ namespace RentALLMongo
                     MessageBox.Show("Choose a car");
                 }
             }
-            else 
+            else
             {
                 MessageBox.Show("Choose a car you want see comments for!");
             }
@@ -131,6 +131,7 @@ namespace RentALLMongo
         private void MyBookmarkBtn_Click(object sender, EventArgs e)
         {
             myBookmarksBox.Items.Clear();
+            DescriptionlistBox.Items.Clear();
             var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
             var database = client.GetDatabase("RentALLDb");
             var vehicleCollection = database.GetCollection<Vehicle>("vehicles");
@@ -139,7 +140,7 @@ namespace RentALLMongo
             var user = userCollection.AsQueryable().Where(x => x.Id == Global.ActiveUser.Id).FirstOrDefault();
             var bookmark = user.BookmarkList;
             VehicleslistBox.Items.Clear();
-            foreach(var b in bookmark)
+            foreach (var b in bookmark)
             {
                 myBookmarksBox.Items.Add("Type: " + b.Type +
                                          "  Model: " + b.Model +
@@ -173,7 +174,7 @@ namespace RentALLMongo
                     var def = Builders<User>.Update.Push(u => u.BookmarkList, new Vehicle { Id = vehicle.Id, Type = vehicle.Type, Model = vehicle.Model, DailyPrice = vehicle.DailyPrice, Description = vehicle.Description, Owner = vehicle.Owner, ProductionYear = vehicle.ProductionYear });
                     userCollection.UpdateOne(user, def);
                     myBookmarksBox.Items.Add("Type: " + vehicle.Type + "  Model: " + vehicle.Model + "  Daily price: " + vehicle.DailyPrice + "  Production year: " + vehicle.ProductionYear);
-                }  
+                }
             }
             else
             {
