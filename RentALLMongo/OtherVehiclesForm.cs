@@ -57,25 +57,32 @@ namespace RentALLMongo
 
         private void commentsBtn_Click(object sender, EventArgs e)
         {
-            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
-            var database = client.GetDatabase("RentALLDb");
-            var collection = database.GetCollection<Vehicle>("vehicles");
-
-            var model = modelComboBox.SelectedItem.ToString();
-            var ownerUsername = userComboBox.SelectedItem.ToString();
-
-            var vehicle = collection.AsQueryable()
-            .Where(v => v.Model == model && v.UserOwner.Username == ownerUsername).FirstOrDefault();
-
-            if (vehicle != null)
+            if (userComboBox.SelectedIndex >= 0)
             {
-                Global.VehicleToComment = vehicle;
-                ReviewForm reviewForm = new ReviewForm();
-                reviewForm.ShowDialog();
+                var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+                var database = client.GetDatabase("RentALLDb");
+                var collection = database.GetCollection<Vehicle>("vehicles");
+
+                var model = modelComboBox.SelectedItem.ToString();
+                var ownerUsername = userComboBox.SelectedItem.ToString();
+
+                var vehicle = collection.AsQueryable()
+                .Where(v => v.Model == model && v.UserOwner.Username == ownerUsername).FirstOrDefault();
+
+                if (vehicle != null)
+                {
+                    Global.VehicleToComment = vehicle;
+                    ReviewForm reviewForm = new ReviewForm();
+                    reviewForm.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Choose a car");
+                }
             }
-            else
+            else 
             {
-                MessageBox.Show("Choose a car");
+                MessageBox.Show("Choose a car you want see comments for!");
             }
         }
 

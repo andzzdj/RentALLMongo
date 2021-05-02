@@ -95,19 +95,26 @@ namespace RentALLMongo
 
         private void deleteVehicleButton_Click(object sender, EventArgs e)
         {
-            var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
-            var database = client.GetDatabase("RentALLDb");
-            var collection = database.GetCollection<Vehicle>("vehicles");
-            var index = Vehicles.SelectedIndex;
+            if (Vehicles.SelectedIndex >= 0)
+            {
+                var client = new MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+                var database = client.GetDatabase("RentALLDb");
+                var collection = database.GetCollection<Vehicle>("vehicles");
+                var index = Vehicles.SelectedIndex;
 
-            var vehicles = collection.AsQueryable().Where(x => x.UserOwner.Id == Global.ActiveUser.Id).ToList();
+                var vehicles = collection.AsQueryable().Where(x => x.UserOwner.Id == Global.ActiveUser.Id).ToList();
 
-            var filter = Builders<Vehicle>.Filter.Where(p => p.Id == vehicles.ElementAt(index).Id);
+                var filter = Builders<Vehicle>.Filter.Where(p => p.Id == vehicles.ElementAt(index).Id);
 
-            collection.DeleteOne(filter);
-            MessageBox.Show("Vehicle successfully deleted!");
-            Description.Items.Clear();
-            //todo Andjelka-> Proveri da li treba jos nesto da se obrise kad i auto, mada ne bi trebalo.
+                collection.DeleteOne(filter);
+                MessageBox.Show("Vehicle successfully deleted!");
+                Description.Items.Clear();
+                //todo Andjelka-> Proveri da li treba jos nesto da se obrise kad i auto, mada ne bi trebalo.
+            }
+            else
+            {
+                MessageBox.Show("You have to choose a car you want to delete!");
+            }
         }
 
         private void otherVehiclesButton_Click(object sender, EventArgs e)
